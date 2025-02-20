@@ -1,0 +1,34 @@
+
+version: '3.8'
+
+services:
+  server:
+    image: panubo/vsftpd:latest
+    container_name: server
+    ports:
+      - "21:21"
+    environment:
+      - FTP_USER=ftpuser
+      - FTP_PASSWORD=ftppass
+    volumes:
+      #- /home/user42/Desktop/server:/srv
+      -  /Users/melissaadjogoua/Desktop/piscine/inquisitor/server:/srv
+    networks:
+      - inquisitor
+
+  client:
+    image: alpine
+    container_name: client
+    networks:
+      - inquisitor
+    command: tail -f /dev/null  # Ce qui fait que le conteneur ne fait rien
+
+  inquisitor:
+    build: .
+    image: inquisitor
+    container_name: inquisitor
+    networks:
+      - inquisitor
+
+networks:
+  inquisitor:
