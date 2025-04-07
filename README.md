@@ -161,6 +161,3 @@ The **Inquisitor network** is a private Docker network connecting all relevant s
 - **Testing**: The environment is fully isolated from the external network, ensuring a controlled environment for testing ARP poisoning and FTP monitoring.
 - **Scalability**: New containers or services can be added easily, maintaining isolation while enabling easy expansion of the environment.
 
-## Conclusion
-
-The **Inquisitor** project provides a comprehensive and containerized approach to experimenting with **ARP poisoning** and **FTP traffic sniffing**. By using **Docker** and **libpcap**, this project demonstrates key concepts in network security and packet sniffing, offering a powerful tool for monitoring and manipulating network traffic.
