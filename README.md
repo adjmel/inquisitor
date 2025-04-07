@@ -16,7 +16,6 @@ The **Inquisitor** project is a network security tool designed to perform **ARP 
 Before starting, ensure the following tools are installed on your machine:
 - **Docker** and **docker-compose** (for container management).
 - A **Linux-based system** to run the containers.
-- Basic knowledge of **ARP poisoning**, **FTP**, and **libpcap**.
 
 ## Project Structure
 
