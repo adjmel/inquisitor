@@ -33,7 +33,7 @@ inquisitor/
 - `Dockerfile`: Builds the base image required for the inquisitor program and dependencies.
 - `docker-compose.yml`: Defines the network and services (FTP server, client, inquisitor).
 - `Makefile`: Automates environment setup, clean-up, and program build.
-- `inquisitor.py`: The core program that performs ARP poisoning and monitors FTP traffic.
+- `inquisitor`: The core program that performs ARP poisoning and monitors FTP traffic.
 - `README.md`: Documentation on project setup and usage.
 
 ## Setup Instructions
