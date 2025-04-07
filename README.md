@@ -24,8 +24,10 @@ inquisitor/
 ├── Dockerfile              # Docker image definition
 ├── docker-compose.yml      # Defines multi-container services (FTP server, client, inquisitor)
 ├── Makefile                # Automation script for environment setup and build
-├── inquisitor.py           # Main program for ARP poisoning and packet sniffing
+├── inquisitor              # Main program for ARP poisoning and packet sniffing
+├── test_ftp.sh             # Bash script to test the program
 └── README.md               # Project documentation
+
 ```
 
 - `Dockerfile`: Builds the base image required for the inquisitor program and dependencies.
