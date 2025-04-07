@@ -6,12 +6,12 @@ services:
     image: panubo/vsftpd:latest
     container_name: server
     ports:
-      - "21:21"
+      - "2121:21"
     environment:
       - FTP_USER=ftpuser
       - FTP_PASSWORD=ftppass
     volumes:
-      #- /home/user42/Desktop/server:/srv
+      #exemple : - /home/user42/Desktop/server:/srv
       -  /Users/melissaadjogoua/Desktop/piscine/inquisitor/server:/srv
     networks:
       - inquisitor
