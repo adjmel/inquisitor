@@ -21,7 +21,7 @@ services:
     container_name: client
     networks:
       - inquisitor
-    command: tail -f /dev/null  # Ce qui fait que le conteneur ne fait rien
+    command: tail -f /dev/null  # le conteneur ne fait rien
 
   inquisitor:
     build: .

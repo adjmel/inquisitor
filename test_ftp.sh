@@ -3,28 +3,28 @@
 # Configurations
 # FTP_SERVER="172.18.0.4"       # Adresse IP du serveur FTP
 FTP_SERVER=${FTP_SERVER}
-FTP_USER="ftpuser"            # Nom d'utilisateur FTP
-FTP_PASS="ftppass"            # Mot de passe FTP
-TEST_FILE="test_file.txt"     # Nom du fichier pour les tests
+FTP_USER="ftpuser"            
+FTP_PASS="ftppass"            
+TEST_FILE="test_file.txt"    
 
-echo "Début des tests FTP..."
+echo "FTP tests..."
 
-# Test 1: Connexion au serveur FTP
-echo "Test 1: Connexion au serveur FTP"
+# Test 1:
+echo "Test 1: Connecting to the FTP server"
 ftp -inv $FTP_SERVER <<EOF
 user $FTP_USER $FTP_PASS
 quit
 EOF
 
 if [ $? -eq 0 ]; then
-    echo "Succès : Connexion FTP OK"
+    echo "Success: FTP connection OK"
 else
-    echo "Échec : Connexion FTP impossible"
+    echo "Failure: Unable to connect to FTP"
     exit 1
 fi
 
-# Test 2: Liste des fichiers sur le serveur FTP
-echo "Test 2: Liste des fichiers sur le serveur FTP"
+# Test 2:
+echo "Test 2: List of files on the FTP server"
 ftp -inv $FTP_SERVER <<EOF
 user $FTP_USER $FTP_PASS
 ls
@@ -32,15 +32,15 @@ quit
 EOF
 
 if [ $? -eq 0 ]; then
-    echo "Succès : Liste des fichiers récupérée"
+    echo "List of files on the FTP server"
 else
-    echo "Échec : Impossible de lister les fichiers"
+    echo "Failed: Unable to list files"
     exit 1
 fi
 
 
-# Test 3: Téléchargement de fichier depuis le serveur FTP
-echo "Test 3: Téléchargement de fichier $TEST_FILE"
+# Test 3: 
+echo "Test 3: File download $TEST_FILE"
 ftp -inv $FTP_SERVER <<EOF
 user $FTP_USER $FTP_PASS
 get $TEST_FILE
@@ -48,17 +48,17 @@ quit
 EOF
 
 if [ $? -eq 0 ]; then
-    echo "Succès : Fichier téléchargé"
+    echo "Success: File downloaded"
 else
-    echo "Échec : Téléchargement du fichier impossible"
+    echo "Failed: Unable to download file"
     exit 1
 fi
 
-# Test 4: Upload d'un fichier vers le serveur FTP
+# Test 4: Uploading a file to the FTP server
 UPLOAD_FILE="upload_test.txt"
-echo "Contenu de test" > $UPLOAD_FILE
+echo "Test content" > $UPLOAD_FILE
 
-echo "Test 4: Upload de fichier $UPLOAD_FILE"
+echo "Test 4: File upload $UPLOAD_FILE"
 ftp -inv $FTP_SERVER <<EOF
 user $FTP_USER $FTP_PASS
 put $UPLOAD_FILE
@@ -66,14 +66,14 @@ quit
 EOF
 
 if [ $? -eq 0 ]; then
-    echo "Succès : Fichier uploadé"
+    echo "Success: File uploaded"
 else
-    echo "Échec : Upload du fichier impossible"
+    echo "Failed: Unable to upload file"
     exit 1
 fi
 
-# Lancement en parallèle des commandes FTP
-echo "Test: Full Duplex - Téléchargement et Upload simultanés"
+# Launching FTP Commands
+echo "Test: Full Duplex - Simultaneous Download and Upload"
 
 ftp -inv $FTP_SERVER <<EOF &
 user $FTP_USER $FTP_PASS
@@ -87,17 +87,16 @@ put $UPLOAD_FILE
 quit
 EOF
 
-# Attendre la fin des processus
 wait
 
-# Vérification des résultats
 if [ $? -eq 0 ]; then
-    echo "Succès : Téléchargement et Upload terminés (Full Duplex)"
+    echo "Success: Download and Upload completed (Full Duplex)"
 else
-    echo "Échec : Une des opérations a échoué"
+    echo "Failure: One of the operations failed."
     exit 1
 fi
 
+#Expected result ↓
 # inquisitor git:(main) ✗ make test
 # Lancement des tests FTP...
 # Début des tests FTP...
