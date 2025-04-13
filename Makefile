@@ -32,5 +32,5 @@ program:
 # Run FTP tests
 tests:
 	@echo "Running FTP tests..."
-	FTP_SERVER=$$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' server) && \
+	FTP_SERVER=$$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' server) && \
 	docker exec -e FTP_SERVER=$$FTP_SERVER -it inquisitor ./test_ftp.sh
