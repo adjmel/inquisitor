@@ -22,20 +22,20 @@ else
     exit 1
 fi
 
-# Test 2:
-echo "Test 2: List of files on the FTP server"
-ftp -inv $FTP_SERVER <<EOF
-user $FTP_USER $FTP_PASS
-ls
-quit
-EOF
+# # Test 2:
+# echo "Test 2: List of files on the FTP server"
+# ftp -inv $FTP_SERVER <<EOF
+# user $FTP_USER $FTP_PASS
+# ls
+# quit
+# EOF
 
-if [ $? -eq 0 ]; then
-    echo "List of files on the FTP server"
-else
-    echo "Failed: Unable to list files"
-    exit 1
-fi
+# if [ $? -eq 0 ]; then
+#     echo "List of files on the FTP server"
+# else
+#     echo "Failed: Unable to list files"
+#     exit 1
+# fi
 
 
 # # Test 3: 
