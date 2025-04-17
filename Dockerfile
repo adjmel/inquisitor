@@ -9,6 +9,4 @@ WORKDIR /usr/src/app
 
 COPY . .
 
-# Default command to keep the container active
-# CMD ["tail", "-f", "/dev/null"]
 CMD service vsftpd start && tail -f /dev/null

@@ -11,8 +11,7 @@ services:
       - FTP_USER=ftpuser
       - FTP_PASSWORD=ftppass
     volumes:
-      #exemple : - /home/user42/Desktop/server:/srv
-      -  /Users/melissaadjogoua/Desktop/piscine/inquisitor/server:/srv
+      -  ../server:/srv
     networks:
       - inquisitor
 
@@ -21,7 +20,7 @@ services:
     container_name: client
     networks:
       - inquisitor
-    command: tail -f /dev/null  # le conteneur ne fait rien
+    command: tail -f /dev/null
 
   inquisitor:
     build: .
