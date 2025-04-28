@@ -1,0 +1,30 @@
+services:
+  server:
+    image: panubo/vsftpd:latest
+    container_name: server
+    ports:
+      - "2121:21"
+    environment:
+      - FTP_USER=ftpuser
+      - FTP_PASSWORD=ftppass
+    volumes:
+      -  ../server:/srv
+    networks:
+      - inquisitor
+
+  client:
+    image: alpine
+    container_name: client
+    networks:
+      - inquisitor
+    command: tail -f /dev/null
+
+  inquisitor:
+    build: .
+    image: inquisitor
+    container_name: inquisitor
+    networks:
+      - inquisitor
+
+networks:
+  inquisitor:
